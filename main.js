@@ -3,12 +3,15 @@ const desktopMenu= document.querySelector('.desktop-menu');
 const menuCarritoIcon=document.querySelector('.navbar-shopping-cart');
 const menuHamIcon= document.querySelector('.menu');
 const mobileMenu=document.querySelector('.mobile-menu');
+const productDetailContainer=document.querySelector('#productDetail');
+const productDetailCloseContainer=document.querySelector('.product-detail-close');
 const shoppingCartContainer=document.querySelector('#shoppingCartContainer');
 const cardsContainer=document.querySelector('.cards-container');
 
 menuEmail.addEventListener('click',toggleDesktopMenu);
 menuHamIcon.addEventListener('click',toggleMobileMenu);
 menuCarritoIcon.addEventListener('click',toggleCarrito);
+productDetailCloseContainer.addEventListener('click',closeDetailAside);
 
 function toggleDesktopMenu(){
     const isAsideClosed=shoppingCartContainer.classList.contains('inactive');
@@ -28,6 +31,9 @@ function toggleMobileMenu(){
     }
 
     mobileMenu.classList.toggle('inactive');
+
+    closeDetailAside();
+
 }
 
 function toggleCarrito(){
@@ -41,6 +47,24 @@ function toggleCarrito(){
         desktopMenu.classList.add('inactive');
     }
     shoppingCartContainer.classList.toggle('inactive');
+
+    
+    const isProductDetailClosed=productDetailContainer.classList.contains('inactive');
+
+    if(!isProductDetailClosed){
+        productDetailContainer.classList.add('inactive');
+    }
+
+}
+
+function openDetailAside(){
+    shoppingCartContainer.classList.add('inactive');
+    productDetailContainer.classList.remove('inactive');
+}
+
+function closeDetailAside(){
+
+    productDetailContainer.classList.add('inactive');
 }
 
 const productList = [];
@@ -75,19 +99,6 @@ productList.push({
     image:'https://images.pexels.com/photos/384555/pexels-photo-384555.jpeg?auto=compress&cs=tinysrgb&w=400',
 });
 
-/* <div class="product-card">
-    <img src="https://images.pexels.com/photos/357141/pexels-photo-357141.jpeg?auto=compress&cs=tinysrgb&w=400" 
-                alt="cat">
-    <div class="product-info">
-        <div>
-            <p>$120</p>
-            <p>Gatito pequeño</p>
-        </div>
-        <figure>
-            <img src="./icons/bt_add_to_cart.svg" alt="carrito de compras">
-        </figure>
-    </div>
-</div>  */
 
 function renderProducts(arr){
     for(product of productList){
@@ -97,6 +108,7 @@ function renderProducts(arr){
         //product = {name,price,image}
         const productImg=document.createElement('img');
         productImg.setAttribute('src', product.image);
+        productImg.addEventListener('click', openDetailAside);
     
         const productInfo= document.createElement('div');
         productInfo.classList.add('product-info');
